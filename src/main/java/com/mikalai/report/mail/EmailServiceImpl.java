@@ -3,8 +3,12 @@ package com.mikalai.report.mail;
 import com.google.api.client.util.Base64;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -14,15 +18,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+
+@Service
+@Getter
+@Setter
 public class EmailServiceImpl implements EmailService {
 
     private static final Logger logger = LogManager.getLogger(EmailServiceImpl.class);
-    public static final String TEXT_HTML_CHARSET_UTF_8 = "text/html; charset=utf-8";
+    private static final String TEXT_HTML_CHARSET_UTF_8 = "text/html; charset=utf-8";
 
-    public EmailServiceImpl(Gmail service) {
-        this.service = service;
-    }
-
+    @Autowired
     private Gmail service;
 
     /**

@@ -1,0 +1,7 @@
+app:
+  report:
+    manager: Dorien
+    accountId: mikalai.churakou@gmail.com
+    mailTo: mikalai_churakou@epam.com,mikalai.churakou@gmail.com
+    mailFrom: mikalai.churakou@gmail.com
+    mailSubject: EPAM Puma team status %s
