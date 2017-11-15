@@ -17,10 +17,22 @@ apply plugin: 'application'
 
 
 
-mainClassName = 'Quickstart'
+mainClassName = 'com.mikalai.report.Run'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 version = '1.0'
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': version,
+                'Main-Class': 'com.mikalai.report.Run'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
 
 repositories {
     mavenCentral()
