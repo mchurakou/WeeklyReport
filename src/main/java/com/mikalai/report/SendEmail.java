@@ -3,6 +3,8 @@ package com.mikalai.report;
 import com.google.api.client.util.Base64;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
+import com.mikalai.report.service.GoogleService;
+import com.mikalai.report.service.GoogleServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,26 +1,12 @@
 package com.mikalai.report;
 
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.util.store.FileDataStoreFactory;
-import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.*;
 import com.google.api.services.sheets.v4.Sheets;
 import com.mikalai.report.entity.Record;
+import com.mikalai.report.service.GoogleService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +17,8 @@ public class SpreadSheetReader {
 
 
     public static final String SPREADSHEET_ID = "19rQdF8XohhyiC_DHOTFBQYhnSfMhBL5hlOM5FoBM6lI";
-    public static final String RANGE = "Report tab!A2:C";
+    public static final String JIRAS_RANGE = "Report tab!A2:C";
+    public static final String PLANS_RANGE = "Plans!A:A";
 
     public SpreadSheetReader(GoogleService googleService) {
         this.googleService = googleService;
@@ -47,19 +34,37 @@ public class SpreadSheetReader {
     public List<Record> getRecords() throws Exception {
         Sheets service = googleService.getSheetsService();
 
-        ValueRange response = service.spreadsheets().values().get(SPREADSHEET_ID, RANGE).execute();
+        ValueRange response = service.spreadsheets().values().get(SPREADSHEET_ID, JIRAS_RANGE).execute();
         List<List<Object>> values = response.getValues();
-        List<Record> result = null;
+        List<Record> result;
         if (values == null || values.size() == 0) {
             throw new RuntimeException("No data!");
         } else {
             result = values.stream().map(row -> {
-                String jiraNumber = (String) row.get(0);
+                String jiraUrl = (String) row.get(0);
+                String[] split = jiraUrl.split("/");
+                String jiraNumber = split[split.length - 1];
                 String jiraTitle = (String) row.get(1);
                 String status = (String) row.get(2);
-                Record record = new Record(jiraNumber, jiraTitle, status);
+                Record record = new Record(jiraNumber, jiraUrl, jiraTitle, status);
                 return record;
             }).collect(Collectors.toList());
+
+        }
+
+        return result;
+    }
+
+    public List<String> getPlans() throws Exception {
+        Sheets service = googleService.getSheetsService();
+
+        ValueRange response = service.spreadsheets().values().get(SPREADSHEET_ID, PLANS_RANGE).execute();
+        List<List<Object>> values = response.getValues();
+        List<String> result;
+        if (values == null || values.size() == 0) {
+            throw new RuntimeException("No data!");
+        } else {
+            result = values.stream().map(row -> (String) row.get(0)).collect(Collectors.toList());
 
         }
 

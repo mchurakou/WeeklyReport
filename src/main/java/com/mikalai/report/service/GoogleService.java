@@ -1,4 +1,4 @@
-package com.mikalai.report;
+package com.mikalai.report.service;
 
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.sheets.v4.Sheets;

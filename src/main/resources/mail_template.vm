@@ -1,0 +1,55 @@
+<html>
+<head>
+    <style>
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+
+        }
+        table {
+            border-collapse: collapse;
+        }
+
+        table tr:nth-child(even){background-color: #f2f2f2;}
+
+        table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<p>Hello, $manager</p>
+
+<p>Please see our progress on this week:</p>
+
+<table>
+    <tr>
+        <th>Jira</th><th>Title</th><th>Status</th>
+    </tr>
+    #foreach( $record in $records )
+        <tr>
+            <td><a href="$record.jiraUrl">$record.jiraNumber</a></td><td>$record.jiraTitle</td><td>$record.status</td>
+        </tr>
+    #end
+</table>
+
+#if (!$plans.isEmpty())
+    <p>Plans and next steps:</p>
+    <ul>
+        #foreach( $plan in $plans )
+            <li>$plan</li>
+        #end
+    </ul>
+#end
+</body>
+</html>
+
