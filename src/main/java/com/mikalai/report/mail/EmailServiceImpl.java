@@ -1,10 +1,8 @@
-package com.mikalai.report;
+package com.mikalai.report.mail;
 
 import com.google.api.client.util.Base64;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
-import com.mikalai.report.service.GoogleService;
-import com.mikalai.report.service.GoogleServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,14 +14,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class SendEmail {
+public class EmailServiceImpl implements EmailService {
 
-    private static final Logger logger = LogManager.getLogger(SendEmail.class);
+    private static final Logger logger = LogManager.getLogger(EmailServiceImpl.class);
+    public static final String TEXT_HTML_CHARSET_UTF_8 = "text/html; charset=utf-8";
+
+    public EmailServiceImpl(Gmail service) {
+        this.service = service;
+    }
+
+    private Gmail service;
 
     /**
      * Send an email from the user's mailbox to its recipient.
      *
-     * @param service Authorized Gmail API instance.
      * @param userId User's email address. The special value "me"
      * can be used to indicate the authenticated user.
      * @param emailContent Email to be sent.
@@ -31,8 +35,7 @@ public class SendEmail {
      * @throws MessagingException
      * @throws IOException
      */
-    public static Message sendMessage(Gmail service,
-            String userId,
+    public Message sendMessage(String userId,
             MimeMessage emailContent) throws Exception {
         Message message = createMessageWithEmail(emailContent);
         message = service.users().messages().send(userId, message).execute();
@@ -50,7 +53,7 @@ public class SendEmail {
      * @throws IOException
      * @throws MessagingException
      */
-    public static Message createMessageWithEmail(MimeMessage emailContent) throws Exception {
+    private static Message createMessageWithEmail(MimeMessage emailContent) throws Exception {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         emailContent.writeTo(buffer);
         byte[] bytes = buffer.toByteArray();
@@ -60,15 +63,6 @@ public class SendEmail {
         return message;
     }
 
-    public static void main(String[] args) throws Exception {
-        GoogleService googleService = new GoogleServiceImpl();
-        Gmail gmailService = googleService.getGmailService();
-        String userId = "mikalai.churakou@gmail.com";
-
-
-        MimeMessage email = createEmail("mikalai_churakou@epam.com,mikalai.churakou@gmail.com", "mikalai.churakou@gmail.com", "REVIEW", "HELLO REVIRW");
-        sendMessage(gmailService, userId, email);
-    }
 
 
     /**
@@ -81,7 +75,7 @@ public class SendEmail {
      * @return the MimeMessage to be used to send email
      * @throws MessagingException
      */
-    public static MimeMessage createEmail(String to,
+    public MimeMessage createEmail(String to,
             String from,
             String subject,
             String bodyText) throws Exception {
@@ -94,7 +88,7 @@ public class SendEmail {
         email.addRecipients(javax.mail.Message.RecipientType.TO,
                 to);
         email.setSubject(subject);
-        email.setText(bodyText);
+        email.setContent(bodyText, TEXT_HTML_CHARSET_UTF_8);
         return email;
     }
 
