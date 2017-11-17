@@ -5,3 +5,4 @@ app:
     mailTo: mikalai_churakou@epam.com,mikalai.churakou@gmail.com
     mailFrom: mikalai.churakou@gmail.com
     mailSubject: EPAM Puma team status %s
+    jiraUrl: https://jira.wolterskluwer.nl/browse/

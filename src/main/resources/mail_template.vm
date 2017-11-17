@@ -35,7 +35,7 @@
     </tr>
     #foreach( $record in $records )
         <tr>
-            <td><a href="$record.jiraUrl">$record.jiraNumber</a></td><td>$record.jiraTitle</td><td>$record.status</td>
+            <td><a href="$jiraUrl$record.jiraNumber">$record.jiraNumber</a></td><td>$record.jiraTitle</td><td>$record.status</td>
         </tr>
     #end
 </table>

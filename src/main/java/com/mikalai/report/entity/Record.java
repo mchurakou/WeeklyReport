@@ -8,7 +8,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class Record {
     private String jiraNumber;
-    private String jiraUrl;
     private String jiraTitle;
     private String status;
 }

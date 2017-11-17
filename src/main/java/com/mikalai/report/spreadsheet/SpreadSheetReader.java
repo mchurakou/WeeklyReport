@@ -31,12 +31,10 @@ public class SpreadSheetReader {
             throw new RuntimeException("No data!");
         } else {
             result = values.stream().map(row -> {
-                String jiraUrl = (String) row.get(0);
-                String[] split = jiraUrl.split("/");
-                String jiraNumber = split[split.length - 1];
+                String jiraNumber = (String) row.get(0);
                 String jiraTitle = (String) row.get(1);
                 String status = (String) row.get(2);
-                Record record = new Record(jiraNumber, jiraUrl, jiraTitle, status);
+                Record record = new Record(jiraNumber, jiraTitle, status);
                 return record;
             }).collect(Collectors.toList());
 

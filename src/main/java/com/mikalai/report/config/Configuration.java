@@ -15,6 +15,6 @@ public class Configuration {
     private String mailTo;
     private String mailFrom;
     private String mailSubject;
-
+    private String jiraUrl;
 
 }

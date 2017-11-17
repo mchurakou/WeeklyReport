@@ -63,9 +63,10 @@ public class TemplateService {
 
         VelocityContext context = new VelocityContext();
 
-        context.put( "manager", config.getManager());
+        context.put("manager", config.getManager());
         context.put("plans", plans );
         context.put("records", records);
+        context.put("jiraUrl", config.getJiraUrl());
 
         StringWriter sw = new StringWriter();
         template.merge( context, sw );
