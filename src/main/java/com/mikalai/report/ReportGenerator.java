@@ -1,8 +1,10 @@
 package com.mikalai.report;
 
 import com.mikalai.report.config.Configuration;
+import com.mikalai.report.config.DynamicConfig;
 import com.mikalai.report.mail.EmailService;
 import com.mikalai.report.mail.TemplateService;
+import com.mikalai.report.spreadsheet.SpreadSheetReader;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
@@ -19,6 +21,7 @@ import java.time.LocalDate;
 @Setter
 public class ReportGenerator {
     private static final Logger logger = LogManager.getLogger(ReportGenerator.class);
+    public static final String DRAFT = "DRAFT:";
 
     @Autowired
     private TemplateService templateService;
@@ -29,13 +32,18 @@ public class ReportGenerator {
     @Autowired
     private Configuration config;
 
-    public void sendReport(){
+
+    @Autowired
+    private SpreadSheetReader reader;
+
+    public void sendDraftReport(){
         try {
 
-            String body = templateService.getBody();
+            DynamicConfig dynamicConfig = reader.getConfig();
+            String body = templateService.getBody(dynamicConfig.getManager());
 
-            String subject = String.format(config.getMailSubject(), LocalDate.now() );
-            MimeMessage email = emailService.createEmail(config.getMailTo(), config.getMailFrom(), subject, body);
+            String subject = DRAFT + String.format(config.getMailSubject(), LocalDate.now());
+            MimeMessage email = emailService.createEmail(dynamicConfig.getDraftMailTo(), dynamicConfig.getDraftMailCC(), config.getMailFrom(), subject, body);
             emailService.sendMessage(config.getAccountId(), email);
 
             logger.info("Report was sent");

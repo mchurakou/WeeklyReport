@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,6 +82,7 @@ public class EmailServiceImpl implements EmailService {
      * @throws MessagingException
      */
     public MimeMessage createEmail(String to,
+            String cc,
             String from,
             String subject,
             String bodyText) throws Exception {
@@ -92,6 +94,9 @@ public class EmailServiceImpl implements EmailService {
         email.setFrom(new InternetAddress(from));
         email.addRecipients(javax.mail.Message.RecipientType.TO,
                 to);
+        if (Strings.isNotEmpty(cc)) {
+            email.addRecipients(javax.mail.Message.RecipientType.CC, cc);
+        }
         email.setSubject(subject);
         email.setContent(bodyText, TEXT_HTML_CHARSET_UTF_8);
         return email;

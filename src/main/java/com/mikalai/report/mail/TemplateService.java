@@ -56,17 +56,17 @@ public class TemplateService {
 
     }
 
-    public String getBody() throws Exception {
+    public String getBody(String manager) throws Exception {
+
         List<Record> records = s.getRecords();
         List<String> plans = s.getPlans();
 
-
         VelocityContext context = new VelocityContext();
 
-        context.put("manager", config.getManager());
+        context.put("manager", manager);
         context.put("plans", plans );
         context.put("records", records);
-        context.put("jiraUrl", config.getJiraUrl());
+        context.put("jiraUrl", this.config.getJiraUrl());
 
         StringWriter sw = new StringWriter();
         template.merge( context, sw );

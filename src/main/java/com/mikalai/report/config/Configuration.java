@@ -10,9 +10,8 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 public class Configuration {
-    private String manager;
+
     private String accountId;
-    private String mailTo;
     private String mailFrom;
     private String mailSubject;
     private String jiraUrl;

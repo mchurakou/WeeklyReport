@@ -8,7 +8,7 @@ public interface EmailService {
     Message sendMessage(String userId,
             MimeMessage emailContent) throws Exception;
 
-    MimeMessage createEmail(String to,
+    MimeMessage createEmail(String to, String cc,
             String from,
             String subject,
             String bodyText) throws Exception;

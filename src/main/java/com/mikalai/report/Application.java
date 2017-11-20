@@ -22,7 +22,7 @@ public class Application {
     public static void main(String[] args) throws Exception {
         ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
         ReportGenerator reportGenerator = context.getBean(ReportGenerator.class);
-        reportGenerator.sendReport();
+        reportGenerator.sendDraftReport();
     }
 
 

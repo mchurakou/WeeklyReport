@@ -2,6 +2,7 @@ package com.mikalai.report.spreadsheet;
 
 import com.google.api.services.sheets.v4.model.*;
 import com.google.api.services.sheets.v4.Sheets;
+import com.mikalai.report.config.DynamicConfig;
 import com.mikalai.report.entity.Record;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +19,7 @@ public class SpreadSheetReader {
     public static final String SPREADSHEET_ID = "19rQdF8XohhyiC_DHOTFBQYhnSfMhBL5hlOM5FoBM6lI";
     public static final String JIRAS_RANGE = "Report tab!A2:C";
     public static final String PLANS_RANGE = "Plans!A:A";
+    public static final String CONFIGURATION_RANGE = "Configuration!B:B";
 
     @Autowired
     private Sheets sheetsService;
@@ -56,6 +58,26 @@ public class SpreadSheetReader {
         }
 
         return result;
+    }
+
+    public DynamicConfig getConfig() throws Exception {
+        ValueRange response = sheetsService.spreadsheets().values().get(SPREADSHEET_ID, CONFIGURATION_RANGE).execute();
+        List<List<Object>> values = response.getValues();
+        DynamicConfig result;
+        if (values == null || values.size() == 0) {
+            throw new RuntimeException("No data!");
+        } else {
+            String draftMailTo = (String)values.get(0).get(0);
+            String draftMailCC = (String)values.get(1).get(0);
+            String finalMailTo = (String)values.get(2).get(0);
+            String finalMailCC = (String)values.get(3).get(0);
+            String manager = (String)values.get(4).get(0);
+            result = new DynamicConfig(draftMailTo, draftMailCC, finalMailTo, finalMailCC, manager);
+
+        }
+
+        return result;
+
     }
 
 }
