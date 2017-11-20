@@ -4,7 +4,6 @@ import com.mikalai.report.config.Configuration;
 import com.mikalai.report.config.DynamicConfig;
 import com.mikalai.report.mail.EmailService;
 import com.mikalai.report.mail.TemplateService;
-import com.mikalai.report.spreadsheet.SpreadSheetReader;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
@@ -32,23 +31,40 @@ public class ReportGenerator {
     @Autowired
     private Configuration config;
 
-
-    @Autowired
-    private SpreadSheetReader reader;
-
-    public void sendDraftReport(){
+    public void sendDraftReport(DynamicConfig dynamicConfig){
         try {
 
-            DynamicConfig dynamicConfig = reader.getConfig();
             String body = templateService.getBody(dynamicConfig.getManager());
 
             String subject = DRAFT + String.format(config.getMailSubject(), LocalDate.now());
-            MimeMessage email = emailService.createEmail(dynamicConfig.getDraftMailTo(), dynamicConfig.getDraftMailCC(), config.getMailFrom(), subject, body);
-            emailService.sendMessage(config.getAccountId(), email);
 
-            logger.info("Report was sent");
+            sendReport(subject, body, dynamicConfig.getDraftMailTo(), dynamicConfig.getDraftMailCC(), config.getMailFrom());
+
+            logger.info("Draft report was sent");
         } catch (Exception e) {
             logger.error(e);
         }
     }
+
+    public void sendFinalReport(DynamicConfig dynamicConfig){
+        try {
+
+            String body = templateService.getBody(dynamicConfig.getManager());
+
+            String subject = String.format(config.getMailSubject(), LocalDate.now());
+
+            sendReport(subject, body, dynamicConfig.getFinalMailTo(), dynamicConfig.getFinalMailCC(), config.getMailFrom());
+
+            logger.info("Final report was sent");
+        } catch (Exception e) {
+            logger.error(e);
+        }
+    }
+
+
+    private void sendReport(String subject, String body, String to, String cc, String from) throws Exception{
+        MimeMessage email = emailService.createEmail(to, cc, from, subject, body);
+        emailService.sendMessage(config.getAccountId(), email);
+    }
+
 }
