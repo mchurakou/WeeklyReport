@@ -1,6 +1,8 @@
 app:
   report:
-    accountId: mikalai.churakou@gmail.com
-    mailFrom: mikalai_churakou@epam.com
+    mailFrom:
+    mailPassword:
     mailSubject: EPAM Puma team status %s
     jiraUrl: https://jira.wolterskluwer.nl/browse/
+    smtpHost: smtp.office365.com
+    smtpPort: 587

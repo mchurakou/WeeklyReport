@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.mail.internet.MimeMessage;
+import javax.mail.Message;
 import java.time.LocalDate;
 
 
@@ -38,7 +38,7 @@ public class ReportGenerator {
 
             String subject = DRAFT + String.format(config.getMailSubject(), LocalDate.now());
 
-            sendReport(subject, body, dynamicConfig.getDraftMailTo(), dynamicConfig.getDraftMailCC(), config.getMailFrom());
+            sendReport(subject, body, dynamicConfig.getDraftMailTo(), dynamicConfig.getDraftMailCC());
 
             logger.info("Draft report was sent");
         } catch (Exception e) {
@@ -53,7 +53,7 @@ public class ReportGenerator {
 
             String subject = String.format(config.getMailSubject(), LocalDate.now());
 
-            sendReport(subject, body, dynamicConfig.getFinalMailTo(), dynamicConfig.getFinalMailCC(), config.getMailFrom());
+            sendReport(subject, body, dynamicConfig.getFinalMailTo(), dynamicConfig.getFinalMailCC());
 
             logger.info("Final report was sent");
         } catch (Exception e) {
@@ -62,9 +62,9 @@ public class ReportGenerator {
     }
 
 
-    private void sendReport(String subject, String body, String to, String cc, String from) throws Exception{
-        MimeMessage email = emailService.createEmail(to, cc, from, subject, body);
-        emailService.sendMessage(config.getAccountId(), email);
+    private void sendReport(String subject, String body, String to, String cc) throws Exception{
+        Message email = emailService.createEmail(to, cc, subject, body);
+        emailService.sendMessage(email);
     }
 
 }

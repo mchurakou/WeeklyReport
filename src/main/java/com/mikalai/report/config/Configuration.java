@@ -11,9 +11,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class Configuration {
 
-    private String accountId;
     private String mailFrom;
+    private String mailPassword;
     private String mailSubject;
     private String jiraUrl;
+    private String smtpPort;
+    private String smtpHost;
 
 }

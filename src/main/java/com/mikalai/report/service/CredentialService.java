@@ -8,7 +8,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
-import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.mikalai.report.spreadsheet.SpreadSheetReader;
 import org.apache.logging.log4j.LogManager;
@@ -51,8 +50,7 @@ public class CredentialService {
      * If modifying these scopes, delete your previously saved credentials
      */
     private final List<String> SCOPES = Arrays.asList(
-            SheetsScopes.SPREADSHEETS_READONLY,
-            GmailScopes.GMAIL_COMPOSE, GmailScopes.GMAIL_SEND);
+            SheetsScopes.SPREADSHEETS_READONLY);
 
 
 

@@ -1,15 +1,12 @@
 package com.mikalai.report.mail;
 
-import com.google.api.services.gmail.model.Message;
 
-import javax.mail.internet.MimeMessage;
+import javax.mail.Message;
 
 public interface EmailService {
-    Message sendMessage(String userId,
-            MimeMessage emailContent) throws Exception;
+    void sendMessage(Message emailContent) throws Exception;
 
-    MimeMessage createEmail(String to, String cc,
-            String from,
+    Message createEmail(String to, String cc,
             String subject,
             String bodyText) throws Exception;
 }
