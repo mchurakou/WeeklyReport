@@ -40,6 +40,16 @@
     #end
 </table>
 
+
+#if (!$plans.isEmpty())
+    <p>Conducted additional meetings:</p>
+    <ul>
+        #foreach( $conductedMeeting in $conductedMeetings )
+            <li>$conductedMeeting</li>
+        #end
+    </ul>
+#end
+
 #if (!$plans.isEmpty())
     <p>Plans and next steps:</p>
     <ul>

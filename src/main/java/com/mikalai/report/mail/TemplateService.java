@@ -60,12 +60,14 @@ public class TemplateService {
 
         List<Record> records = s.getRecords();
         List<String> plans = s.getPlans();
+        List<String> conductedMeetings = s.getConductedMeetings();
 
         VelocityContext context = new VelocityContext();
 
         context.put("manager", manager);
         context.put("plans", plans );
         context.put("records", records);
+        context.put("conductedMeetings", conductedMeetings);
         context.put("jiraUrl", this.config.getJiraUrl());
 
         StringWriter sw = new StringWriter();

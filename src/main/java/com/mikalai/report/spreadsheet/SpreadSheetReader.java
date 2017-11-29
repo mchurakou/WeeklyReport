@@ -19,6 +19,7 @@ public class SpreadSheetReader {
     public static final String SPREADSHEET_ID = "19rQdF8XohhyiC_DHOTFBQYhnSfMhBL5hlOM5FoBM6lI";
     public static final String JIRAS_RANGE = "Report tab!A2:C";
     public static final String PLANS_RANGE = "Plans!A:A";
+    public static final String CONDUCTED_MEETINGS_RANGE = "Conducted meetings!A:A";
     public static final String CONFIGURATION_RANGE = "Configuration!B:B";
 
     @Autowired
@@ -46,8 +47,16 @@ public class SpreadSheetReader {
     }
 
     public List<String> getPlans() throws Exception {
+        return getRows(PLANS_RANGE);
+    }
 
-        ValueRange response = sheetsService.spreadsheets().values().get(SPREADSHEET_ID, PLANS_RANGE).execute();
+
+    public List<String> getConductedMeetings() throws Exception {
+        return getRows(CONDUCTED_MEETINGS_RANGE);
+    }
+
+    public List<String> getRows(String range) throws java.io.IOException {
+        ValueRange response = sheetsService.spreadsheets().values().get(SPREADSHEET_ID, range).execute();
         List<List<Object>> values = response.getValues();
         List<String> result;
         if (values == null || values.size() == 0) {
