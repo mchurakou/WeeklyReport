@@ -41,7 +41,7 @@
 </table>
 
 
-#if (!$plans.isEmpty())
+#if (!$conductedMeetings.isEmpty())
     <p>Conducted additional meetings:</p>
     <ul>
         #foreach( $conductedMeeting in $conductedMeetings )

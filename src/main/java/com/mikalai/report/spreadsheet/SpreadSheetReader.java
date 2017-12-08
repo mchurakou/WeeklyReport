@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class SpreadSheetReader {
         List<List<Object>> values = response.getValues();
         List<Record> result;
         if (values == null || values.size() == 0) {
-            throw new RuntimeException("No data!");
+            throw new RuntimeException("No jira info!");
         } else {
             result = values.stream().map(row -> {
                 String jiraNumber = (String) row.get(0);
@@ -60,7 +61,7 @@ public class SpreadSheetReader {
         List<List<Object>> values = response.getValues();
         List<String> result;
         if (values == null || values.size() == 0) {
-            throw new RuntimeException("No data!");
+            result = Collections.emptyList();
         } else {
             result = values.stream().map(row -> (String) row.get(0)).collect(Collectors.toList());
 
@@ -74,7 +75,7 @@ public class SpreadSheetReader {
         List<List<Object>> values = response.getValues();
         DynamicConfig result;
         if (values == null || values.size() == 0) {
-            throw new RuntimeException("No data!");
+            throw new RuntimeException("No configuration!");
         } else {
             String draftMailTo = (String)values.get(0).get(0);
             String draftMailCC = (String)values.get(1).get(0);
