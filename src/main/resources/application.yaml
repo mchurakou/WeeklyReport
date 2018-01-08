@@ -3,6 +3,6 @@ app:
     mailFrom:
     mailPassword:
     mailSubject: EPAM Puma team status %s
-    jiraUrl: https://jira.wolterskluwer.nl/browse/
+    jiraUrl: https://jira.wolterskluwer.io/jira/browse/
     smtpHost: smtp.office365.com
     smtpPort: 587
